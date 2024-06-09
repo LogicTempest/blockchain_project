@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles2.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Transaction Blocks</h1>
+        <div class="block-container">
+            {% set start_transaction_number = (transactions|length * (transactions|length - 1)) + 1 %}
+            {% for block in transactions|batch(10) %}
+                <div class="block">
+                    <h2>Block {{ loop.index }}</h2>
+                    <ul>
+                        {% set block_start_index = (loop.index - 1) * 10 + start_transaction_number %}
+                        {% for transaction in block %}
+                            {% set transaction_number = block_start_index + loop.index0 %}
+                            <li>
+                                <a href="{{ url_for('transaction_detail', transaction_id=transaction['index']) }}" 
+                                    class="{{ 'malicious' if transaction['is_malicious'] else 'honest' }}">
+                                    Transaction {{transaction_number -9900}}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

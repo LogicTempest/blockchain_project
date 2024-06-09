@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        // Function to generate a random 8-digit number
+        function generateRandomTransactionId() {
+            var min = 10000000;
+            var max = 99999999;
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Generate and display the random transaction ID when the page loads
+        window.onload = function() {
+            var transactionIdElement = document.getElementById('transaction-id');
+            var randomTransactionId = generateRandomTransactionId();
+            transactionIdElement.textContent = randomTransactionId;
+
+            // Truncate amount and fee to 2 decimal places
+            var amountElements = document.getElementsByClassName('amount');
+            var feeElements = document.getElementsByClassName('fee');
+
+            for (var i = 0; i < amountElements.length; i++) {
+                var amount = parseFloat(amountElements[i].textContent).toFixed(2);
+                amountElements[i].textContent = amount;
+            }
+
+            for (var j = 0; j < feeElements.length; j++) {
+                var fee = parseFloat(feeElements[j].textContent).toFixed(2);
+                feeElements[j].textContent = fee;
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Transaction Details</h1>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Transaction ID</td>
+                <td id="transaction-id"></td>
+            </tr>
+            <!-- <tr>
+                <td>Index</td>
+                <td>{{ transaction.index }}</td>
+            </tr> -->
+            <tr>
+                <td>Amount</td>
+                <td class="amount">{{ transaction.amount }}</td>
+            </tr>
+            <tr>
+                <td>Sender</td>
+                <td>{{ transaction.sender }}</td>
+            </tr>
+            <tr>
+                <td>Receiver</td>
+                <td>{{ transaction.receiver }}</td>
+            </tr>
+            <tr>
+                <td>Fee</td>
+                <td class="fee">{{ transaction.fee }}</td>
+            </tr>
+            <tr>
+                <td>Size</td>
+                <td>{{ transaction.size }}</td>
+            </tr>
+            <tr>
+                <td>Is Malicious</td>
+                <td>{{ 'Yes' if transaction.is_malicious else 'No' }}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
